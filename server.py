@@ -14,7 +14,7 @@ class ChatService(harmony_pb2_grpc.ChatServiceServicer):
         return harmony_pb2.JoinResponse(message=f"Entrou em: #{request.channel}")
 
     async def SendMessage(self, request, context):
-        print(f"[Server] Transmitindo messagem do {request.username} em #{request.channel}: '{request.content}'")
+        print(f"[Server] Transmitindo mensagem de {request.username} em #{request.channel}: '{request.content}'")
         async with self.lock:
             for queue in self.channels[request.channel]:
                 await queue.put((request.username, request.content))
@@ -25,7 +25,7 @@ class ChatService(harmony_pb2_grpc.ChatServiceServicer):
         queue = asyncio.Queue()
         async with self.lock:
             self.channels[request.channel].append(queue)
-            print(f"[Server] {peer} entrou em #{request.channel}")
+            print(f"[Server] {peer} inscrito em #{request.channel}")
         try:
             while True:
                 username, content = await queue.get()
