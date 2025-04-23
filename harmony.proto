@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package chat;
+
+service ChatService {
+  rpc JoinChannel(JoinRequest) returns (JoinResponse);
+  rpc SendMessage(MessageRequest) returns (MessageAck);
+  rpc StreamMessages(ChannelRequest) returns (stream Message);
+}
+
+message JoinRequest {
+  string username = 1;
+  string channel = 2;
+}
+
+message JoinResponse {
+  string message = 1;
+}
+
+message MessageRequest {
+  string username = 1;
+  string channel = 2;
+  string content = 3;
+}
+
+message MessageAck {
+  bool success = 1;
+}
+
+message ChannelRequest {
+  string channel = 1;
+}
+
+message Message {
+  string username = 1;
+  string content = 2;
+}
